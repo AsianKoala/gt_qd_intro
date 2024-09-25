@@ -32,7 +32,6 @@ impl Listener {
     /// * `cfg` - A `ServerConfig` object that contains the WebSocket server details such as the endpoint and token.
     pub fn new(cfg: server::ServerConfig) -> Self {
         let websocket_url = format!("{}?token={}", cfg.endpoint, cfg.token);
-        println!("{}", websocket_url);
         let (mut socket, _response) =
             connect(Url::parse(&websocket_url).unwrap()).expect("Cannot connect to WebSocket");
 
