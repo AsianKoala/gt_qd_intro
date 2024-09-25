@@ -83,7 +83,7 @@ impl OrderBook {
     pub fn display(&self) {
         // Print headers for the table
         println!(
-            "{:<15} {:<15}   |   {:<15} {:<15}",
+            "\n{:<15} {:<15}   |   {:<15} {:<15}",
             "Bid Price", "Quantity", "Ask Price", "Quantity"
         );
         println!("{:-<60}", ""); // Print a separator

@@ -7,6 +7,12 @@ pub struct ServerConfig {
     pub ping_interval: u64,
 }
 
+struct KUCoinServer {
+    cfg: ServerConfig,
+    max_attempts: u32,
+    sleep_duration: u32
+}
+
 pub async fn get_ws_server_info() -> Result<ServerConfig, Error> {
     let url = "https://api-futures.kucoin.com/api/v1/bullet-public";
     let client = reqwest::Client::new();
