@@ -1,7 +1,6 @@
 mod models;
 mod orderbook;
 mod server;
-mod websocket;
 mod listener;
 
 use gt_qd_orderbook::{listener::Listener, orderbook::OrderBook};

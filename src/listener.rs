@@ -16,6 +16,8 @@ mod msgtype {
     pub struct Pong;
 }
 
+/// `Listener` struct holds WebSocket-related data, including configuration, the WebSocket connection,
+/// and the connection ID for managing communication with the WebSocket server.
 pub struct Listener {
     cfg: server::ServerConfig,
     socket: tungstenite::WebSocket<MaybeTlsStream<TcpStream>>,
@@ -23,6 +25,11 @@ pub struct Listener {
 }
 
 impl Listener {
+    /// `new` function initializes a new `Listener` instance. 
+    /// It establishes a WebSocket connection and reads the initial welcome message to get the connection ID.
+    ///
+    /// # Arguments
+    /// * `cfg` - A `ServerConfig` object that contains the WebSocket server details such as the endpoint and token.
     pub fn new(cfg: server::ServerConfig) -> Self {
         let websocket_url = format!("{}?token={}", cfg.endpoint, cfg.token);
         println!("{}", websocket_url);
@@ -50,6 +57,12 @@ impl Listener {
         }
     }
 
+    /// `run` function starts the WebSocket listener that listens for messages from the WebSocket server.
+    /// It handles ping-pong communication for keeping the connection alive and updates the order book
+    /// based on received market data.
+    ///
+    /// # Arguments
+    /// * `order_book` - A mutable reference to an `OrderBook` object to process bids and asks.
     pub fn run(&mut self, order_book: &mut OrderBook) {
         let subscribe_message = format!(
             r#"{{
@@ -118,6 +131,13 @@ impl Listener {
         }
     }
 
+    /// Asynchronous `build_cfg` function attempts to retrieve the WebSocket server configuration.
+    /// It makes up to `MAX_ATTEMPTS` to get the server information, with a delay between attempts.
+    /// If successful, the server configuration (`ServerConfig`) is returned, otherwise an error is returned.
+    ///
+    /// # Returns
+    /// * `Result<ServerConfig, String>` - On success, returns a `ServerConfig` object containing the server details.
+    ///   On failure, returns an error message after exhausting the number of attempts.
     pub async fn build_cfg() -> Result<ServerConfig, String> {
         let mut attempts = 0;
         const MAX_ATTEMPTS: u32 = 5;
